@@ -4,10 +4,10 @@ The app runs at `/`. All of its code is in `resources/js/stays/`, and every toke
 
 ## Placeholders
 
-| Placeholder    | Choice                                                                               | To change it                  |
-| -------------- | ------------------------------------------------------------------------------------ | ----------------------------- |
-| `{{APP_NAME}}` | Lodgely, a working name                                                              | Set `APP_NAME` in `.env`      |
-| `{{STACK}}`    | This project's Laravel, React, TypeScript and Tailwind 4 setup, as a mobile web page | Not applicable                |
+| Placeholder    | Choice                                                                               | To change it             |
+| -------------- | ------------------------------------------------------------------------------------ | ------------------------ |
+| `{{APP_NAME}}` | Lodgely, a working name                                                              | Set `APP_NAME` in `.env` |
+| `{{STACK}}`    | This project's Laravel, React, TypeScript and Tailwind 4 setup, as a mobile web page | Not applicable           |
 
 ## Where the prompt and guide disagree
 
@@ -146,7 +146,7 @@ The layout follows the three reference screenshots, on a white page. The blue he
 ## App name and home-screen use
 
 - **App name:** `APP_NAME` in `.env` names the app everywhere: the page title, splash screen, home-screen name (`/manifest.webmanifest` is generated from it), and every screen that says the name. The page writes it into a meta tag, and `theme.ts` reads it from there, so changing it only needs a reload, not a rebuild. A running `composer run dev` has to be restarted to see a change, because it copies `.env` when it starts.
-- **Home-screen app on iPhone:** iOS can lay out a home-screen web app shorter than the screen, which leaves a gap under the tab bar. A small script in the page sizes the app to the full screen, and it only runs in an iOS home-screen app. The stay details header no longer adds the status-bar space twice when it sticks to the top.
+- **Home-screen app on iPhone:** the status bar is opaque black (`apple-mobile-web-app-status-bar-style` set to `black`), not translucent. With a translucent status bar, iOS 26 lays out home-screen web apps shorter than the screen and leaves a strip under the tab bar that the page can't draw into. Stretching the app doesn't help, because the stretched part is clipped. The cost is that the status bar is black above the blue header, instead of blue. The stay details header no longer adds the status-bar space twice when it sticks to the top. iOS only picks up these settings when the app is removed from the home screen and added again.
 
 ## Seeded account details
 

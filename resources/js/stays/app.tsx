@@ -330,7 +330,7 @@ export function StaysApp() {
         <StoreProvider>
             <div
                 style={themeVariables}
-                className="st-root fixed inset-x-0 top-0 flex h-[var(--st-app-height,100dvh)] justify-center bg-st-surface"
+                className="st-root fixed inset-0 flex justify-center bg-st-surface"
             >
                 <CatalogueFrame />
             </div>

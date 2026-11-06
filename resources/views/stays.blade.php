@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
         <meta name="theme-color" content="#003b95">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        {{-- Opaque, not black-translucent: with a translucent status bar, iOS 26 home-screen apps
+             stop short of the bottom of the screen and nothing can be drawn in the gap. --}}
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
         {{-- The app reads its name from here, so APP_NAME in .env renames it everywhere. --}}
         <meta name="application-name" content="{{ config('app.name') }}">
@@ -21,10 +23,7 @@
         <style>
             #stays-splash {
                 position: fixed;
-                top: 0;
-                right: 0;
-                left: 0;
-                height: var(--st-app-height, 100dvh);
+                inset: 0;
                 z-index: 100;
                 display: flex;
                 align-items: center;
@@ -37,26 +36,6 @@
                 font-weight: 700;
             }
         </style>
-        <script>
-            // A home-screen app on iOS can lay the page out shorter than the screen, which
-            // leaves a gap under the tab bar. navigator.standalone only exists on iOS.
-            (function () {
-                if (navigator.standalone !== true) {
-                    return;
-                }
-
-                function fit() {
-                    var landscape = window.matchMedia('(orientation: landscape)').matches;
-                    var sides = [screen.width, screen.height];
-                    var full = landscape ? Math.min.apply(null, sides) : Math.max.apply(null, sides);
-
-                    document.documentElement.style.setProperty('--st-app-height', Math.max(window.innerHeight, full) + 'px');
-                }
-
-                fit();
-                window.addEventListener('resize', fit);
-            })();
-        </script>
         <noscript>
             <style>#stays-splash { display: none; }</style>
         </noscript>
