@@ -86,7 +86,7 @@ function SectionBar({
     help?: boolean;
 }) {
     return (
-        <header className="sticky top-[env(safe-area-inset-top)] z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-1 border-b border-st-border-soft bg-st-surface st-safe-top pr-1">
+        <header className="sticky top-0 z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-1 border-b border-st-border-soft bg-st-surface st-safe-top pr-1">
             <button
                 type="button"
                 aria-label={`Back to ${backLabel}`}

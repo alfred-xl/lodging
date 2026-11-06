@@ -3,8 +3,10 @@
 namespace App\Http\Resources\Stays;
 
 use App\Models\Booking;
+use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -43,6 +45,11 @@ class BookingResource extends JsonResource
                 'phone' => $this->property->phone,
                 'check_in_time' => $this->property->check_in_time,
                 'check_out_time' => $this->property->check_out_time,
+                'images' => $this->property->images->map(fn (PropertyImage $image) => [
+                    'url' => Storage::disk('public')->url($image->path),
+                    'kind' => $image->kind,
+                    'alt' => $image->alt,
+                ]),
             ],
         ];
     }

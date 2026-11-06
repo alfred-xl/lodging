@@ -65,6 +65,8 @@ test('the seeder creates the account and booking, and can run twice', function (
         ->assertJsonPath('data.0.property.phone', '+44 7979399678')
         ->assertJsonPath('data.0.total_minor', 2810)
         ->assertJsonPath('data.0.check_in', '2026-10-29')
+        ->assertJsonCount(3, 'data.0.property.images')
+        ->assertJsonPath('data.0.property.images.0.url', Storage::disk('public')->url('properties/room-15.jpg'))
         ->assertJsonPath('user.avatar_url', Storage::disk('public')->url('avatars/chukwunonso-eze.jpg'));
 });
 

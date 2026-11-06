@@ -61,6 +61,8 @@ class StayBookingSeeder extends Seeder
             ],
         );
 
+        $this->seedPhotos($property);
+
         $booking = Booking::query()->updateOrCreate(
             ['reference' => 'LD-90214738'],
             [
@@ -96,5 +98,31 @@ class StayBookingSeeder extends Seeder
                 'processed_at' => '2026-10-30 00:55:00',
             ],
         );
+    }
+
+    /**
+     * Plain double rooms from the openly licensed set, to suit its Double Room with Shared
+     * Bathroom. No openly licensed photo of the building itself exists.
+     */
+    private function seedPhotos(Property $property): void
+    {
+        $assets = __DIR__.'/assets/properties';
+        $credits = collect(json_decode((string) file_get_contents($assets.'/credits.json'), true))->keyBy('file');
+
+        $property->images()->delete();
+
+        foreach (['room-15.jpg', 'room-03.jpg', 'room-22.jpg'] as $position => $file) {
+            Storage::disk('public')->put('properties/'.$file, (string) file_get_contents($assets.'/'.$file));
+
+            $property->images()->create([
+                'path' => 'properties/'.$file,
+                'kind' => 'room',
+                'alt' => 'Double room',
+                'credit' => trim(($credits[$file]['title'] ?: 'Untitled').' by '.($credits[$file]['creator'] ?: 'unknown')),
+                'license' => $credits[$file]['license'] === 'pdm' ? 'Public domain' : 'CC0',
+                'source_url' => $credits[$file]['source_url'],
+                'position' => $position,
+            ]);
+        }
     }
 }

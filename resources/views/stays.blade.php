@@ -6,11 +6,13 @@
         <meta name="theme-color" content="#003b95">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Lodgely">
+        <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
+        {{-- The app reads its name from here, so APP_NAME in .env renames it everywhere. --}}
+        <meta name="application-name" content="{{ config('app.name') }}">
 
-        <title>Lodgely</title>
+        <title>{{ config('app.name') }}</title>
 
-        <link rel="manifest" href="/stays.webmanifest">
+        <link rel="manifest" href="{{ route('stays.manifest') }}">
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -19,7 +21,10 @@
         <style>
             #stays-splash {
                 position: fixed;
-                inset: 0;
+                top: 0;
+                right: 0;
+                left: 0;
+                height: var(--st-app-height, 100dvh);
                 z-index: 100;
                 display: flex;
                 align-items: center;
@@ -32,6 +37,26 @@
                 font-weight: 700;
             }
         </style>
+        <script>
+            // A home-screen app on iOS can lay the page out shorter than the screen, which
+            // leaves a gap under the tab bar. navigator.standalone only exists on iOS.
+            (function () {
+                if (navigator.standalone !== true) {
+                    return;
+                }
+
+                function fit() {
+                    var landscape = window.matchMedia('(orientation: landscape)').matches;
+                    var sides = [screen.width, screen.height];
+                    var full = landscape ? Math.min.apply(null, sides) : Math.max.apply(null, sides);
+
+                    document.documentElement.style.setProperty('--st-app-height', Math.max(window.innerHeight, full) + 'px');
+                }
+
+                fit();
+                window.addEventListener('resize', fit);
+            })();
+        </script>
         <noscript>
             <style>#stays-splash { display: none; }</style>
         </noscript>
@@ -40,7 +65,7 @@
         @vite(['resources/css/app.css', 'resources/js/stays/main.tsx'])
     </head>
     <body>
-        <div id="stays-splash" aria-hidden="true">Lodgely</div>
+        <div id="stays-splash" aria-hidden="true">{{ config('app.name') }}</div>
         <div id="stays-root"></div>
     </body>
 </html>

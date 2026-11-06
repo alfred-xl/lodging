@@ -1,5 +1,5 @@
 import { serverRequest } from '../api';
-import type { Hotel } from '../data';
+import type { Hotel, HotelImage } from '../data';
 import { SEED_USERS } from '../fixtures/users';
 import type { BookingStatus, MockBooking } from '../store';
 
@@ -163,6 +163,7 @@ type ServerBooking = {
         phone: string | null;
         check_in_time: string;
         check_out_time: string;
+        images: Pick<HotelImage, 'url' | 'kind' | 'alt'>[];
     };
 };
 
@@ -242,7 +243,12 @@ function hotelFrom(booking: ServerBooking): Hotel {
         leftAtPrice: null,
         features: [],
         photos: ['room', 'exterior', 'lobby', 'city'],
-        images: [],
+        images: property.images.map((image) => ({
+            ...image,
+            credit: '',
+            license: '',
+            sourceUrl: null,
+        })),
         map: { x: 50, y: 40 },
         phone: property.phone ?? undefined,
         checkInTime: property.check_in_time,

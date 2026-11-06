@@ -31,7 +31,7 @@ import {
 import { featureLabel, hotelById, priceFor } from '../data';
 import type { Feature, Hotel } from '../data';
 import { money, plural } from '../format';
-import { goHome, Link, navigate, openSheet } from '../router';
+import { goHome, navigate, openSheet } from '../router';
 import { useStore } from '../store';
 
 const FEATURE_ICONS: Record<Feature, LucideIcon> = {
@@ -149,17 +149,6 @@ export function PropertyScreen({ hotelId }: { hotelId?: string }) {
                 trailing={<SaveHeart hotel={hotel} tone="brand" />}
             />
             <Gallery hotel={hotel} />
-            {hotel.images.length > 0 && (
-                <p className="px-4 pt-2 st-small1 text-st-text-alt">
-                    Representative photos, openly licensed.{' '}
-                    <Link
-                        to={`/photo-credits/${hotel.id}`}
-                        className="text-st-link underline"
-                    >
-                        Photo credits
-                    </Link>
-                </p>
-            )}
 
             <main className="flex flex-col gap-6 px-4 pt-4 pb-6">
                 <section className="flex flex-col gap-1">
@@ -350,63 +339,6 @@ export function MissingHotel() {
                 Go back to Home and search again to see what's available.
             </p>
             <Button onClick={goHome}>Go to Home</Button>
-        </div>
-    );
-}
-
-export function PhotoCreditsScreen({ hotelId }: { hotelId?: string }) {
-    const hotel = hotelById(hotelId);
-
-    if (!hotel) {
-        return <MissingHotel />;
-    }
-
-    const credits = hotel.images.filter(
-        (image, position) =>
-            hotel.images.findIndex((other) => other.url === image.url) ===
-            position,
-    );
-
-    return (
-        <div className="min-h-full bg-st-surface">
-            <TopBar title="Photo credits" fallback={`/property/${hotel.id}`} />
-            <main className="flex flex-col gap-3 p-4">
-                <p className="st-body2">
-                    These are stock photos chosen to show the kind of place{' '}
-                    {hotel.name} is. They aren't photos of a real property.
-                </p>
-                <ul className="flex flex-col divide-y divide-st-border-soft">
-                    {credits.map((image) => (
-                        <li key={image.url} className="flex gap-3 py-3">
-                            <img
-                                src={image.url}
-                                alt=""
-                                className="size-16 shrink-0 rounded-st-sm object-cover"
-                            />
-                            <div className="min-w-0 st-small1">
-                                <p className="st-strong2">{image.alt}</p>
-                                <p className="break-words">{image.credit}</p>
-                                <p className="text-st-text-alt">
-                                    {image.license}
-                                    {image.sourceUrl && (
-                                        <>
-                                            {' · '}
-                                            <a
-                                                href={image.sourceUrl}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="text-st-link underline"
-                                            >
-                                                Source
-                                            </a>
-                                        </>
-                                    )}
-                                </p>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </main>
         </div>
     );
 }

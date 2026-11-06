@@ -30,6 +30,11 @@
     --color-st-map-park: var(--st-color-map-park);
     --color-st-map-water: var(--st-color-map-water);
     --color-st-map-road: var(--st-color-map-road);
+    --color-st-mastercard-red: var(--st-color-mastercard-red);
+    --color-st-mastercard-yellow: var(--st-color-mastercard-yellow);
+    --color-st-mastercard-overlap: var(--st-color-mastercard-overlap);
+    --color-st-visa-blue: var(--st-color-visa-blue);
+    --color-st-amex-blue: var(--st-color-amex-blue);
 
     --radius-st-sm: var(--st-radius-sm);
     --radius-st-chip: var(--st-radius-chip);

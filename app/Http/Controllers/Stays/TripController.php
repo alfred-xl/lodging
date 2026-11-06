@@ -18,7 +18,7 @@ class TripController extends Controller
         $user = $request->user();
 
         return BookingResource::collection(
-            $user->bookings()->with('property')->latest('check_in')->get(),
+            $user->bookings()->with('property.images')->latest('check_in')->get(),
         )->additional(['user' => AccountResource::make($user)]);
     }
 }

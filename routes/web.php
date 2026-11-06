@@ -3,6 +3,7 @@
 use App\Http\Controllers\Stays\AccountController;
 use App\Http\Controllers\Stays\AccountLookupController;
 use App\Http\Controllers\Stays\AvatarController;
+use App\Http\Controllers\Stays\ManifestController;
 use App\Http\Controllers\Stays\PaymentCardController;
 use App\Http\Controllers\Stays\PropertyController;
 use App\Http\Controllers\Stays\SessionController;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 // The booking app is the whole site. Old /stays links still work.
 Route::view('/', 'stays')->name('home');
 Route::redirect('stays', '/')->name('stays');
+Route::get('manifest.webmanifest', ManifestController::class)->name('stays.manifest');
 Route::get('stays/session', [SessionController::class, 'show'])->name('stays.session.show');
 Route::post('stays/session', [SessionController::class, 'store'])->name('stays.session.store');
 Route::delete('stays/session', [SessionController::class, 'destroy'])->name('stays.session.destroy');

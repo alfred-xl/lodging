@@ -46,7 +46,7 @@ import { DestinationSheet } from './screens/destination';
 import { GuestsSheet } from './screens/guests';
 import { HomeScreen } from './screens/home';
 import { MapSheet } from './screens/map';
-import { PhotoCreditsScreen, PropertyScreen } from './screens/property';
+import { PropertyScreen } from './screens/property';
 import { ResultsScreen } from './screens/results';
 import { ReviewScreen } from './screens/review';
 import { RoomsScreen } from './screens/rooms';
@@ -128,8 +128,6 @@ function CurrentScreen({ tab, entry }: { tab: TabId; entry: string }) {
             return <PropertyScreen hotelId={second} />;
         case 'rooms':
             return <RoomsScreen hotelId={second} />;
-        case 'photo-credits':
-            return <PhotoCreditsScreen hotelId={second} />;
         case 'review':
             return (
                 <ReviewScreen hotelId={second} roomId={third} rateId={fourth} />
@@ -332,7 +330,7 @@ export function StaysApp() {
         <StoreProvider>
             <div
                 style={themeVariables}
-                className="st-root fixed inset-0 flex justify-center bg-st-surface"
+                className="st-root fixed inset-x-0 top-0 flex h-[var(--st-app-height,100dvh)] justify-center bg-st-surface"
             >
                 <CatalogueFrame />
             </div>

@@ -6,7 +6,7 @@ The app runs at `/`. All of its code is in `resources/js/stays/`, and every toke
 
 | Placeholder    | Choice                                                                               | To change it                  |
 | -------------- | ------------------------------------------------------------------------------------ | ----------------------------- |
-| `{{APP_NAME}}` | Lodgely, a working name                                                              | Edit `APP_NAME` in `theme.ts` |
+| `{{APP_NAME}}` | Lodgely, a working name                                                              | Set `APP_NAME` in `.env`      |
 | `{{STACK}}`    | This project's Laravel, React, TypeScript and Tailwind 4 setup, as a mobile web page | Not applicable                |
 
 ## Where the prompt and guide disagree
@@ -76,7 +76,7 @@ The prompt says to follow the guide when they conflict, unless its "Known differ
 - **Placeholders:** Security settings, Other travellers, Accessibility settings, My reviews, My questions to properties, Contact Customer service, Safety resource centre, Privacy and data management, and List your property open a placeholder screen. Saved lists opens the Saved tab, and Deals opens the discounts page.
 - **Where data lives:** database accounts load and save through `/stays/account`, covering the profile, photo upload, saved cards, payments and wallet balance. Mock accounts keep the same details on the device only.
 - **Cards:** the full card number never leaves the Add card form. Only the brand, last 4 digits, expiry and cardholder name are sent and stored. The number has to pass a check-digit test, but nothing is charged. In development, the form suggests a test number.
-- **Card logos:** cards show a generic card icon with the brand name, not network logos.
+- **Card logos:** Mastercard cards show the Mastercard mark, Visa shows its wordmark, and Amex its blue badge. Other brands show a generic card icon. The network colours are tokens in `theme.ts`.
 - **Passport:** the number is stored encrypted and never sent back. The app only ever shows its last 3 digits.
 - **Coupons:** no coupon codes exist, so every code is turned down with a message.
 - **Email:** the sign-in email is shown but can't be edited, because changing it needs a verification step this prototype doesn't have. The same goes for "Change email with phone verification".
@@ -116,9 +116,10 @@ Database accounts already sign in through Laravel Fortify, so the remaining work
 
 - **Locations:** 84 fictional properties across 12 UK destinations, with 18 in London and 6 each in Manchester, Edinburgh, Liverpool, Bristol, Bath, York, Brighton, Glasgow, Cardiff, Birmingham and Oxford. `UkPropertySeeder` puts them in the database and `GET /stays/properties` serves them. The app no longer generates hotels in the browser.
 - **Names and addresses:** the names are fictional. Addresses stop at an area and postcode district, such as "Shoreditch, London E1", so none points at a real building.
-- **Photos:** 40 openly licensed photos (CC0 or public domain) from Openverse, in `database/seeders/assets/properties/`. I reviewed each one by eye to exclude people, logos, branded hotels, vintage shots and damaged rooms. `credits.json` records each creator, license and source. Properties share photos from this set, so they're representative rather than real, and each property page says so and links to its credits.
+- **Photos:** 40 openly licensed photos (CC0 or public domain) from Openverse, in `database/seeders/assets/properties/`. I reviewed each one by eye to exclude people, logos, branded hotels, vintage shots and damaged rooms. `credits.json` records each creator, license and source. Properties share photos from this set. The property page no longer shows a photo credit line, since every photo is CC0 or public domain and needs no credit. `credits.json` still records where each one came from.
 - **Prices:** these are in pounds. The amounts keep the same numbers as before, so London prices are close to the earlier ones.
-- **Majestic Inn Liverpool:** this is unlisted, so it doesn't appear in search, because it's a real business and stock photos or ratings would misrepresent it. It still shows in the seeded user's trips.
+- **Majestic Inn Liverpool:** this is unlisted, so it doesn't appear in search, because it's a real business and made-up ratings would misrepresent it. It still shows in the seeded user's trips.
+- **Majestic Inn photos:** the only real photos of the building online are its listing photos on travel sites, and those belong to the property and the platforms. No openly licensed photo of it exists. Its trip card instead shows three plain double rooms from the CC0 set, matching its Double Room with Shared Bathroom. To use your own photos, replace the file names in `StayBookingSeeder::seedPhotos()`.
 - **Reviews:** subscores and guest quotes are still derived in the browser, because they aren't stored.
 - **Loading:** the splash screen waits for the catalogue, up to its 1.5 second limit. If loading fails, search and the destination list say so and offer a retry.
 
@@ -141,6 +142,11 @@ The layout follows the three reference screenshots, on a white page. The blue he
 - **Free cancellation card:** the screenshot cuts this text off, so its ending is written to fit.
 - **Scrolling:** the wordmark and service tabs stay fixed, and the search panel slides under them.
 - **Header icons, Rewards and discounts:** these open placeholder screens, the account page or sign-in. Car rental, Taxi and Attractions show a short message.
+
+## App name and home-screen use
+
+- **App name:** `APP_NAME` in `.env` names the app everywhere: the page title, splash screen, home-screen name (`/manifest.webmanifest` is generated from it), and every screen that says the name. The page writes it into a meta tag, and `theme.ts` reads it from there, so changing it only needs a reload, not a rebuild. A running `composer run dev` has to be restarted to see a change, because it copies `.env` when it starts.
+- **Home-screen app on iPhone:** iOS can lay out a home-screen web app shorter than the screen, which leaves a gap under the tab bar. A small script in the page sizes the app to the full screen, and it only runs in an iOS home-screen app. The stay details header no longer adds the status-bar space twice when it sticks to the top.
 
 ## Seeded account details
 

@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react';
 
-// Also written in resources/views/stays.blade.php and public/stays.webmanifest, which
-// have to render before this file loads.
-export const APP_NAME = 'Lodgely';
+// Set by APP_NAME in .env. The page writes it into a meta tag, which also names the
+// splash screen and the home-screen app before this file loads.
+export const APP_NAME =
+    document.querySelector<HTMLMetaElement>('meta[name="application-name"]')
+        ?.content || document.title;
 
 export const color = {
     brand: '#003b95',
@@ -36,6 +38,12 @@ export const color = {
     mapPark: '#d5e6c3',
     mapWater: '#bcdcf2',
     mapRoad: '#ffffff',
+    // Card network marks, in each network's own colours.
+    mastercardRed: '#eb001b',
+    mastercardYellow: '#f79e1b',
+    mastercardOverlap: '#ff5f00',
+    visaBlue: '#1a1f71',
+    amexBlue: '#2e77bc',
 };
 
 export const space = {

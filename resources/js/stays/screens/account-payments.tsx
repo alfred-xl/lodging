@@ -47,7 +47,10 @@ export function PaymentDetailsScreen() {
                                             key={card.id}
                                             className="flex items-center gap-4"
                                         >
-                                            <CardTile className="size-14" />
+                                            <CardTile
+                                                brand={card.brand}
+                                                className="size-14"
+                                            />
                                             <p className="min-w-0 flex-1 st-body1">
                                                 <span aria-hidden>
                                                     {cardLabel(
@@ -386,7 +389,10 @@ function TransactionRow({ item }: { item: Transaction }) {
             >
                 <span className="flex min-w-0 flex-1 flex-col gap-2">
                     <span className="flex items-center gap-3">
-                        <CardTile className="h-8 w-12 rounded-st-sm" />
+                        <CardTile
+                            brand={item.cardBrand}
+                            className="h-8 w-12 rounded-st-sm st-small2"
+                        />
                         <span className="flex-1 st-body1">
                             •••• {item.cardLastFour}
                         </span>
@@ -546,7 +552,10 @@ export function TransactionDetailsScreen({
                                         Payment method
                                     </dt>
                                     <dd className="flex items-center gap-3 pt-1 st-body1">
-                                        <CardTile className="h-8 w-12 rounded-st-sm" />
+                                        <CardTile
+                                            brand={item.cardBrand}
+                                            className="h-8 w-12 rounded-st-sm st-small2"
+                                        />
                                         <span aria-hidden>
                                             •••• {item.cardLastFour}
                                         </span>

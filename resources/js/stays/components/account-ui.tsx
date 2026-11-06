@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ChevronRight, CreditCard, LoaderCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { AccountDetails } from '../account-data';
 import { Link } from '../router';
@@ -118,16 +118,77 @@ export function NavRow({
     );
 }
 
-export function CardTile({ className }: { className?: string }) {
+function MastercardMark() {
+    const clip = useId();
+
+    return (
+        <svg viewBox="0 0 38 24" className="w-3/4">
+            <defs>
+                <clipPath id={clip}>
+                    <circle cx="12" cy="12" r="11" />
+                </clipPath>
+            </defs>
+            <circle cx="12" cy="12" r="11" className="fill-st-mastercard-red" />
+            <circle
+                cx="26"
+                cy="12"
+                r="11"
+                className="fill-st-mastercard-yellow"
+            />
+            <circle
+                cx="26"
+                cy="12"
+                r="11"
+                clipPath={`url(#${clip})`}
+                className="fill-st-mastercard-overlap"
+            />
+        </svg>
+    );
+}
+
+function BrandMark({ brand }: { brand: string }) {
+    switch (brand) {
+        case 'Mastercard':
+            return <MastercardMark />;
+        case 'Visa':
+            return (
+                <span className="font-extrabold tracking-tight text-st-visa-blue italic">
+                    VISA
+                </span>
+            );
+        case 'American Express':
+            return (
+                <span className="rounded-st-sm bg-st-amex-blue px-1 st-small2 text-st-on-dark">
+                    AMEX
+                </span>
+            );
+        default:
+            return (
+                <CreditCard
+                    className="size-1/2 text-st-link"
+                    strokeWidth={1.5}
+                />
+            );
+    }
+}
+
+// The card network's mark on a white tile. Decorative, so callers name the card in text.
+export function CardTile({
+    brand,
+    className,
+}: {
+    brand: string;
+    className?: string;
+}) {
     return (
         <span
             aria-hidden
             className={clsx(
-                'flex shrink-0 items-center justify-center rounded-st-md border border-st-border bg-st-surface text-st-link',
+                'flex shrink-0 items-center justify-center rounded-st-md border border-st-border-soft bg-st-surface st-strong1',
                 className,
             )}
         >
-            <CreditCard className="size-1/2" strokeWidth={1.5} />
+            <BrandMark brand={brand} />
         </span>
     );
 }
