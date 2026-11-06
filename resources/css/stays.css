@@ -1,0 +1,235 @@
+/* Values live in resources/js/stays/theme.ts. This file only maps them to utilities. */
+@theme inline {
+    --color-st-brand: var(--st-color-brand);
+    --color-st-action: var(--st-color-action);
+    --color-st-link: var(--st-color-link);
+    --color-st-success-fill: var(--st-color-success-fill);
+    --color-st-status-good: var(--st-color-status-good);
+    --color-st-callout: var(--st-color-callout);
+    --color-st-action-hover: var(--st-color-action-hover);
+    --color-st-action-tint: var(--st-color-action-tint);
+    --color-st-accent: var(--st-color-accent);
+    --color-st-on-accent: var(--st-color-on-accent);
+    --color-st-surface: var(--st-color-surface);
+    --color-st-surface-alt: var(--st-color-surface-alt);
+    --color-st-text: var(--st-color-text);
+    --color-st-text-alt: var(--st-color-text-alt);
+    --color-st-border: var(--st-color-border);
+    --color-st-border-soft: var(--st-color-border-soft);
+    --color-st-border-room: var(--st-color-border-room);
+    --color-st-success: var(--st-color-success);
+    --color-st-success-tint: var(--st-color-success-tint);
+    --color-st-danger: var(--st-color-danger);
+    --color-st-danger-tint: var(--st-color-danger-tint);
+    --color-st-disabled-bg: var(--st-color-disabled-bg);
+    --color-st-disabled-text: var(--st-color-disabled-text);
+    --color-st-range-fill: var(--st-color-range-fill);
+    --color-st-overlay: var(--st-color-overlay);
+    --color-st-on-dark: var(--st-color-on-dark);
+    --color-st-map-land: var(--st-color-map-land);
+    --color-st-map-park: var(--st-color-map-park);
+    --color-st-map-water: var(--st-color-map-water);
+    --color-st-map-road: var(--st-color-map-road);
+
+    --radius-st-sm: var(--st-radius-sm);
+    --radius-st-chip: var(--st-radius-chip);
+    --radius-st-md: var(--st-radius-md);
+    --radius-st-lg: var(--st-radius-lg);
+    --radius-st-full: var(--st-radius-full);
+
+    --shadow-st-100: var(--st-shadow-s100);
+    --shadow-st-200: var(--st-shadow-s200);
+}
+
+@utility st-headline1 {
+    font-family: var(--st-font-heading);
+    font-size: var(--st-type-headline1-size);
+    line-height: var(--st-type-headline1-line);
+    font-weight: var(--st-type-headline1-weight);
+}
+
+@utility st-headline2 {
+    font-family: var(--st-font-heading);
+    font-size: var(--st-type-headline2-size);
+    line-height: var(--st-type-headline2-line);
+    font-weight: var(--st-type-headline2-weight);
+}
+
+@utility st-headline3 {
+    font-family: var(--st-font-heading);
+    font-size: var(--st-type-headline3-size);
+    line-height: var(--st-type-headline3-line);
+    font-weight: var(--st-type-headline3-weight);
+}
+
+/* Headline 3 metrics in the body font, which has tabular numbers everywhere. */
+@utility st-price {
+    font-size: var(--st-type-headline3-size);
+    line-height: var(--st-type-headline3-line);
+    font-weight: var(--st-type-headline3-weight);
+}
+
+@utility st-strong1 {
+    font-size: var(--st-type-strong1-size);
+    line-height: var(--st-type-strong1-line);
+    font-weight: var(--st-type-strong1-weight);
+}
+
+@utility st-strong2 {
+    font-size: var(--st-type-strong2-size);
+    line-height: var(--st-type-strong2-line);
+    font-weight: var(--st-type-strong2-weight);
+}
+
+@utility st-emphasized1 {
+    font-size: var(--st-type-emphasized1-size);
+    line-height: var(--st-type-emphasized1-line);
+    font-weight: var(--st-type-emphasized1-weight);
+}
+
+@utility st-emphasized2 {
+    font-size: var(--st-type-emphasized2-size);
+    line-height: var(--st-type-emphasized2-line);
+    font-weight: var(--st-type-emphasized2-weight);
+}
+
+@utility st-body1 {
+    font-size: var(--st-type-body1-size);
+    line-height: var(--st-type-body1-line);
+    font-weight: var(--st-type-body1-weight);
+}
+
+@utility st-body2 {
+    font-size: var(--st-type-body2-size);
+    line-height: var(--st-type-body2-line);
+    font-weight: var(--st-type-body2-weight);
+}
+
+@utility st-small1 {
+    font-size: var(--st-type-small1-size);
+    line-height: var(--st-type-small1-line);
+    font-weight: var(--st-type-small1-weight);
+}
+
+@utility st-small2 {
+    font-size: var(--st-type-small2-size);
+    line-height: var(--st-type-small2-line);
+    font-weight: var(--st-type-small2-weight);
+}
+
+/* Colors and borders change on press and hover, nothing moves. */
+@utility st-transition {
+    transition-property: background-color, border-color, color;
+    transition-duration: var(--st-motion-fast);
+    transition-timing-function: var(--st-ease-standard);
+}
+
+/* Extends the tap area to 44px when the visible control is 36px. */
+@utility st-touch {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: -4px 0;
+    }
+}
+
+@utility st-safe-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+@utility st-safe-bottom {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+@utility st-no-scrollbar {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* App screens scroll without visible scrollbars, as native apps do. */
+.st-root * {
+    scrollbar-width: none;
+}
+
+.st-root *::-webkit-scrollbar {
+    display: none;
+}
+
+.st-root {
+    color-scheme: light;
+    font-family: var(--st-font-body);
+    color: var(--st-color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* In the base layer so a control with its own focus style can override it. */
+@layer base {
+    .st-root :focus-visible {
+        outline: 2px solid var(--st-color-link);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px var(--st-color-action-focus);
+    }
+
+    .st-root .st-on-brand :focus-visible {
+        outline-color: var(--st-color-on-dark);
+    }
+}
+
+.st-overlay[data-state='open'] {
+    animation: st-fade-in var(--st-motion-medium) var(--st-ease-appear);
+}
+
+.st-overlay[data-state='closed'] {
+    animation: st-fade-out var(--st-motion-fast) var(--st-ease-standard);
+}
+
+.st-sheet[data-state='open'] {
+    animation: st-sheet-in var(--st-motion-medium) var(--st-ease-appear);
+}
+
+.st-sheet[data-state='closed'] {
+    animation: st-sheet-out var(--st-motion-fast) var(--st-ease-standard);
+}
+
+@keyframes st-sheet-in {
+    from {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes st-sheet-out {
+    to {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes st-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes st-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .st-sheet[data-state='open'] {
+        animation: st-fade-in var(--st-motion-fast) linear;
+    }
+
+    .st-sheet[data-state='closed'] {
+        animation: st-fade-out var(--st-motion-fast) linear;
+    }
+
+    .st-root * {
+        scroll-behavior: auto;
+    }
+}
