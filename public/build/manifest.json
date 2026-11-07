@@ -187,7 +187,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-BDZT0XfE.css",
+    "file": "assets/app-FG3KwJGB.css",
     "name": "app",
     "names": [
       "app.css"
@@ -409,7 +409,7 @@
     ]
   },
   "resources/js/stays/main.tsx": {
-    "file": "assets/main-CV_WXe9s.js",
+    "file": "assets/main-BwuOJljv.js",
     "name": "main",
     "src": "resources/js/stays/main.tsx",
     "isEntry": true,

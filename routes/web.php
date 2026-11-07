@@ -8,6 +8,7 @@ use App\Http\Controllers\Stays\ManifestController;
 use App\Http\Controllers\Stays\PaymentCardController;
 use App\Http\Controllers\Stays\PropertyController;
 use App\Http\Controllers\Stays\SessionController;
+use App\Http\Controllers\Stays\SupportMessageController;
 use App\Http\Controllers\Stays\TripController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,9 @@ Route::post('stays/account-lookups', [AccountLookupController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('stays.account-lookups.store');
 Route::get('stays/properties', [PropertyController::class, 'index'])->name('stays.properties.index');
+Route::post('stays/support-messages', [SupportMessageController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('stays.support-messages.store');
 Route::get('stays/trips', [TripController::class, 'index'])
     ->middleware('auth')
     ->name('stays.trips.index');

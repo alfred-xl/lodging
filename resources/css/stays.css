@@ -37,6 +37,7 @@
     --color-st-amex-blue: var(--st-color-amex-blue);
     --color-st-flag-blue: var(--st-color-flag-blue);
     --color-st-flag-red: var(--st-color-flag-red);
+    --color-st-notice-text: var(--st-color-notice-text);
 
     --radius-st-sm: var(--st-radius-sm);
     --radius-st-chip: var(--st-radius-chip);

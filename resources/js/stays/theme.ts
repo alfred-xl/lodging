@@ -47,6 +47,8 @@ export const color = {
     // The Union Jack, for UK phone numbers.
     flagBlue: '#012169',
     flagRed: '#c8102e',
+    // Dark orange text for notices on grey, like the call-charges note.
+    noticeText: '#8a3a00',
 };
 
 export const space = {

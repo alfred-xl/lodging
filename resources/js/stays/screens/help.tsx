@@ -11,13 +11,12 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { useDragScroll } from '../components/drag-scroll';
 import { HotelPhoto } from '../components/hotel-photo';
 import { Button, TopBar } from '../components/ui';
 import { destinationById, hotelById } from '../data';
 import { formatWeekday } from '../format';
-import { Link, selectTab } from '../router';
+import { Link, navigate, selectTab } from '../router';
 import { useStore } from '../store';
 import type { BookingStatus, MockBooking } from '../store';
 import { APP_NAME } from '../theme';
@@ -499,16 +498,9 @@ function StillNeedHelp() {
             <h2 className="st-strong1">Still need help?</h2>
             <p className="st-body2 text-st-text-alt">
                 For questions about a booking, message the property from your
-                booking in Bookings.
+                booking in Bookings, or contact us.
             </p>
-            <Button
-                variant="outline"
-                onClick={() =>
-                    toast(
-                        "Messaging customer service isn't part of this prototype yet.",
-                    )
-                }
-            >
+            <Button variant="outline" onClick={() => navigate('/help/contact')}>
                 Contact customer service
             </Button>
         </section>

@@ -28,4 +28,16 @@ return [
 
     'icon_color' => '#013b96',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Customer Service phone number
+    |--------------------------------------------------------------------------
+    |
+    | Shown on "Call us anytime". The default is from the range Ofcom keeps for
+    | TV and drama, so it never rings a real line. Set SUPPORT_PHONE to your own.
+    |
+    */
+
+    'support_phone' => env('SUPPORT_PHONE', '+44 20 7946 0123'),
+
 ];

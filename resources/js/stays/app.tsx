@@ -36,6 +36,12 @@ import {
     HelpCentreScreen,
     HelpTopicScreen,
 } from './screens/help';
+import {
+    CallCustomerServiceScreen,
+    ContactCustomerServiceScreen,
+    MessageCustomerServiceScreen,
+    ResendConfirmationSheet,
+} from './screens/help-contact';
 import { CreateListSheet, SavedListsScreen } from './screens/saved-lists';
 import {
     CurrencyScreen,
@@ -204,6 +210,18 @@ function CurrentScreen({ tab, entry }: { tab: TabId; entry: string }) {
                 return <FindBookingScreen />;
             }
 
+            if (second === 'contact') {
+                return <ContactCustomerServiceScreen />;
+            }
+
+            if (second === 'messages') {
+                return <MessageCustomerServiceScreen />;
+            }
+
+            if (second === 'call') {
+                return <CallCustomerServiceScreen />;
+            }
+
             return second ? (
                 <HelpTopicScreen categoryId={second} topicId={third} />
             ) : (
@@ -347,6 +365,9 @@ function Frame() {
                 <SignOutSheet open={router.sheet?.name === 'signout'} />
                 <CouponSheet open={router.sheet?.name === 'coupon'} />
                 <CreateListSheet open={router.sheet?.name === 'create-list'} />
+                <ResendConfirmationSheet
+                    open={router.sheet?.name === 'resend-confirmation'}
+                />
                 <WalletCreditsSheet
                     open={router.sheet?.name === 'wallet-credits'}
                 />

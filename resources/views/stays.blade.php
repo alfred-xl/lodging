@@ -11,6 +11,7 @@
         <meta name="apple-mobile-web-app-title" content="{{ config('app.name') }}">
         {{-- The app reads its name from here, so APP_NAME in .env renames it everywhere. --}}
         <meta name="application-name" content="{{ config('app.name') }}">
+        <meta name="support-phone" content="{{ config('stays.support_phone') }}">
 
         <title>{{ config('app.name') }}</title>
 
