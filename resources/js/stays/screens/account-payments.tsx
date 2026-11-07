@@ -1,4 +1,5 @@
-import { Building2, ChevronRight, Receipt, Trash2 } from 'lucide-react';
+import clsx from 'clsx';
+import { Hotel, Receipt, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { cardBrand, passesLuhn } from '../account-data';
@@ -24,7 +25,7 @@ function pad(value: number): string {
 export function PaymentDetailsScreen() {
     return (
         <div className="flex min-h-full flex-col bg-st-surface">
-            <TopBar title="Payment details" fallback="/" />
+            <TopBar title="Payment details" fallback="/" back="chevron" />
             <AccountGate>
                 {(account) => (
                     <>
@@ -173,7 +174,11 @@ export function AddCardScreen() {
 
     return (
         <div className="flex min-h-full flex-col bg-st-surface">
-            <TopBar title="Add card" fallback="/payment-details" />
+            <TopBar
+                title="Add card"
+                fallback="/payment-details"
+                back="chevron"
+            />
             <form
                 noValidate
                 className="flex flex-1 flex-col"
@@ -363,8 +368,8 @@ function StatusBadge({ status }: { status: Transaction['status'] }) {
         <span
             className={
                 paid
-                    ? 'inline-block rounded-st-sm bg-st-success-tint px-2 py-0.5 st-body2 text-st-success'
-                    : 'inline-block rounded-st-sm bg-st-surface-alt px-2 py-0.5 st-body2 text-st-text-alt'
+                    ? 'inline-block rounded-st-sm bg-st-success-tint px-1.5 st-small1 text-st-success'
+                    : 'inline-block rounded-st-sm bg-st-surface-alt px-1.5 st-small1 text-st-text-alt'
             }
         >
             {paid ? 'Paid' : 'Refunded'}
@@ -372,11 +377,32 @@ function StatusBadge({ status }: { status: Transaction['status'] }) {
     );
 }
 
-// "30 Oct 2026, 00:55", read as written so it doesn't shift with the device's time zone.
+// "29 Oct 2026, 23:55", read as written so it doesn't shift with the device's time zone.
 function dateTimeText(local: string): string {
     const [date, time] = local.split('T');
 
     return `${dateHeading(date)}, ${time}`;
+}
+
+// The card's network mark and its last four digits, spaced like the reference.
+function CardNumber({
+    brand,
+    lastFour,
+    className,
+}: {
+    brand: string;
+    lastFour: string;
+    className?: string;
+}) {
+    return (
+        <span className={clsx('flex items-center gap-3', className)}>
+            <CardTile brand={brand} className="h-6 w-10 rounded-st-sm" />
+            <span aria-hidden className="st-body1">
+                <span className="tracking-[0.3em]">••••</span> {lastFour}
+            </span>
+            <span className="sr-only">{cardSpokenLabel(brand, lastFour)}</span>
+        </span>
+    );
 }
 
 function TransactionRow({ item }: { item: Transaction }) {
@@ -385,30 +411,19 @@ function TransactionRow({ item }: { item: Transaction }) {
             <Link
                 to={`/transaction/${item.id}`}
                 aria-label={`${item.description}, ${formatMinor(item.amountMinor, item.currency)}, ${item.status === 'paid' ? 'paid' : 'refunded'} with ${cardSpokenLabel(item.cardBrand, item.cardLastFour)}`}
-                className="-mx-4 flex items-center gap-3 px-4 py-3 st-transition hover:bg-st-surface-alt"
+                className="-mx-4 flex flex-col items-start gap-1.5 px-4 py-2 st-transition hover:bg-st-surface-alt"
             >
-                <span className="flex min-w-0 flex-1 flex-col gap-2">
-                    <span className="flex items-center gap-3">
-                        <CardTile
-                            brand={item.cardBrand}
-                            className="h-8 w-12 rounded-st-sm st-small2"
-                        />
-                        <span className="flex-1 st-body1">
-                            •••• {item.cardLastFour}
-                        </span>
-                        <span className="st-body1">
-                            {formatMinor(item.amountMinor, item.currency)}
-                        </span>
+                <span className="flex w-full items-center justify-between gap-3">
+                    <CardNumber
+                        brand={item.cardBrand}
+                        lastFour={item.cardLastFour}
+                    />
+                    <span className="st-body1">
+                        {formatMinor(item.amountMinor, item.currency)}
                     </span>
-                    <span>
-                        <StatusBadge status={item.status} />
-                    </span>
-                    <span className="st-body1">{item.description}</span>
                 </span>
-                <ChevronRight
-                    className="size-5 shrink-0 text-st-text-alt"
-                    aria-hidden
-                />
+                <StatusBadge status={item.status} />
+                <span className="st-body2">{item.description}</span>
             </Link>
         </li>
     );
@@ -417,7 +432,7 @@ function TransactionRow({ item }: { item: Transaction }) {
 export function TransactionsScreen() {
     return (
         <div className="min-h-full bg-st-surface">
-            <TopBar title="Transactions" fallback="/" />
+            <TopBar title="Transactions" fallback="/" back="chevron" />
             <AccountGate>
                 {(account) => {
                     const days = [
@@ -430,7 +445,7 @@ export function TransactionsScreen() {
 
                     return (
                         <main className="px-4 pt-4 pb-8">
-                            <p className="rounded-st-md border border-st-border-soft p-4 st-body2 text-st-text-alt">
+                            <p className="rounded-st-md border border-st-border-soft px-4 py-3 st-body2 text-st-text-alt">
                                 Recent transactions processed by {APP_NAME} are
                                 shown here. (Transaction information for car
                                 rentals and airport transfers will be available
@@ -452,8 +467,8 @@ export function TransactionsScreen() {
                                 </div>
                             ) : (
                                 days.map((day) => (
-                                    <section key={day} className="pt-6">
-                                        <h2 className="st-body1">
+                                    <section key={day} className="pt-4">
+                                        <h2 className="pb-1 st-body1">
                                             {dateHeading(day)}
                                         </h2>
                                         <ul className="divide-y divide-st-border-soft">
@@ -488,7 +503,11 @@ export function TransactionDetailsScreen({
 }) {
     return (
         <div className="min-h-full bg-st-surface">
-            <TopBar title="Transaction details" fallback="/transactions" />
+            <TopBar
+                title="Transaction details"
+                fallback="/transactions"
+                back="chevron"
+            />
             <AccountGate>
                 {(account) => {
                     const item = account.transactions.find(
@@ -504,67 +523,58 @@ export function TransactionDetailsScreen({
                     }
 
                     return (
-                        <main className="px-4 pt-6 pb-8">
-                            <div className="flex flex-col items-center gap-1 text-center">
+                        <main className="px-4 pt-4 pb-8">
+                            <div className="flex flex-col items-center text-center">
                                 <span
                                     aria-hidden
-                                    className="mb-3 flex size-12 items-center justify-center rounded-st-full bg-st-brand text-st-on-dark"
+                                    className="mb-3 flex size-14 items-center justify-center rounded-st-full bg-st-brand text-st-on-dark"
                                 >
-                                    <Building2
-                                        className="size-6"
+                                    <Hotel
+                                        className="size-7"
                                         strokeWidth={1.5}
                                     />
                                 </span>
-                                <p className="st-headline1">
+                                <p className="st-headline2">
                                     {formatMinor(
                                         item.amountMinor,
                                         item.currency,
                                     )}
                                 </p>
-                                <h2 className="st-headline3">
-                                    {item.category}
-                                </h2>
-                                <p className="st-body1">{item.description}</p>
-                                <p className="pt-3">
+                                <h2 className="st-strong1">{item.category}</h2>
+                                <p className="st-body2">{item.description}</p>
+                                <p className="pt-4">
                                     <StatusBadge status={item.status} />
                                 </p>
                             </div>
-                            <h2 className="pt-8 pb-2 st-headline2">
+                            <h2 className="pt-6 pb-4 st-headline3">
                                 Transaction details
                             </h2>
                             <dl className="flex flex-col gap-4">
                                 <div>
-                                    <dt className="st-body1 text-st-text-alt">
+                                    <dt className="st-body2 text-st-text-alt">
                                         Transaction date
                                     </dt>
-                                    <dd className="st-body1">
+                                    <dd className="st-emphasized1">
                                         {dateTimeText(item.processedAt)}
                                     </dd>
                                 </div>
                                 <div>
-                                    <dt className="st-body1 text-st-text-alt">
+                                    <dt className="st-body2 text-st-text-alt">
                                         Processed by
                                     </dt>
-                                    <dd className="st-body1">{APP_NAME}</dd>
+                                    <dd className="st-emphasized1">
+                                        {APP_NAME}
+                                    </dd>
                                 </div>
                                 <div>
-                                    <dt className="st-body1 text-st-text-alt">
+                                    <dt className="st-body2 text-st-text-alt">
                                         Payment method
                                     </dt>
-                                    <dd className="flex items-center gap-3 pt-1 st-body1">
-                                        <CardTile
+                                    <dd>
+                                        <CardNumber
                                             brand={item.cardBrand}
-                                            className="h-8 w-12 rounded-st-sm st-small2"
+                                            lastFour={item.cardLastFour}
                                         />
-                                        <span aria-hidden>
-                                            •••• {item.cardLastFour}
-                                        </span>
-                                        <span className="sr-only">
-                                            {cardSpokenLabel(
-                                                item.cardBrand,
-                                                item.cardLastFour,
-                                            )}
-                                        </span>
                                     </dd>
                                 </div>
                             </dl>

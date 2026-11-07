@@ -35,11 +35,14 @@
     --color-st-mastercard-overlap: var(--st-color-mastercard-overlap);
     --color-st-visa-blue: var(--st-color-visa-blue);
     --color-st-amex-blue: var(--st-color-amex-blue);
+    --color-st-flag-blue: var(--st-color-flag-blue);
+    --color-st-flag-red: var(--st-color-flag-red);
 
     --radius-st-sm: var(--st-radius-sm);
     --radius-st-chip: var(--st-radius-chip);
     --radius-st-md: var(--st-radius-md);
     --radius-st-lg: var(--st-radius-lg);
+    --radius-st-xl: var(--st-radius-xl);
     --radius-st-full: var(--st-radius-full);
 
     --shadow-st-100: var(--st-shadow-s100);
@@ -237,4 +240,10 @@
     .st-root * {
         scroll-behavior: auto;
     }
+}
+
+/* Screens under the floating tab bar end with room for it, in their own background.
+   A screen with a sticky footer marks itself st-fills-bar-space and pads the footer. */
+.st-root [data-bar='true'] > :not(.st-fills-bar-space) {
+    padding-bottom: var(--st-bar-space);
 }

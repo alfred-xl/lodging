@@ -44,6 +44,9 @@ export const color = {
     mastercardOverlap: '#ff5f00',
     visaBlue: '#1a1f71',
     amexBlue: '#2e77bc',
+    // The Union Jack, for UK phone numbers.
+    flagBlue: '#012169',
+    flagRed: '#c8102e',
 };
 
 export const space = {
@@ -58,9 +61,9 @@ export const space = {
     x16: 64,
 };
 
-export const layout = { tabBarHeight: 49 };
+export const layout = { tabBarHeight: 54 };
 
-export const radius = { sm: 4, chip: 6, md: 8, lg: 16, full: 9999 };
+export const radius = { sm: 4, chip: 6, md: 8, lg: 16, xl: 24, full: 9999 };
 
 // [fontSize, lineHeight, fontWeight]
 export const type = {

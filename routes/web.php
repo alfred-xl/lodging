@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Stays\AccountController;
 use App\Http\Controllers\Stays\AccountLookupController;
+use App\Http\Controllers\Stays\AppIconController;
 use App\Http\Controllers\Stays\AvatarController;
 use App\Http\Controllers\Stays\ManifestController;
 use App\Http\Controllers\Stays\PaymentCardController;
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'stays')->name('home');
 Route::redirect('stays', '/')->name('stays');
 Route::get('manifest.webmanifest', ManifestController::class)->name('stays.manifest');
+Route::get('favicon.svg', [AppIconController::class, 'svg'])->name('app-icon.svg');
+Route::get('favicon.ico', [AppIconController::class, 'ico'])->name('app-icon.ico');
+Route::get('apple-touch-icon.png', [AppIconController::class, 'png'])->name('app-icon.apple');
+Route::get('app-icon-{size}.png', [AppIconController::class, 'png'])->whereNumber('size')->name('app-icon.png');
 Route::get('stays/session', [SessionController::class, 'show'])->name('stays.session.show');
 Route::post('stays/session', [SessionController::class, 'store'])->name('stays.session.store');
 Route::delete('stays/session', [SessionController::class, 'destroy'])->name('stays.session.destroy');

@@ -142,7 +142,7 @@ export function PropertyScreen({ hotelId }: { hotelId?: string }) {
     const showOnMap = () => openSheet('map', { hotel: hotel.id });
 
     return (
-        <div className="flex min-h-full flex-col bg-st-surface">
+        <div className="st-fills-bar-space flex min-h-full flex-col bg-st-surface">
             <TopBar
                 title={hotel.name}
                 fallback="/results"
@@ -318,7 +318,7 @@ export function PropertyScreen({ hotelId }: { hotelId?: string }) {
                 </section>
             </main>
 
-            <div className="sticky bottom-0 mt-auto border-t border-st-border-soft bg-st-surface px-4 pt-3 st-safe-bottom">
+            <div className="sticky bottom-0 mt-auto border-t border-st-border-soft bg-st-surface px-4 pt-3 pb-[calc(var(--st-bar-space,0px)+0.75rem)]">
                 <Button
                     variant="outline"
                     className="w-full"

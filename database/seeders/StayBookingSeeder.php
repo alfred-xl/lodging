@@ -95,7 +95,7 @@ class StayBookingSeeder extends Seeder
                 'amount_minor' => $booking->total_minor,
                 'currency' => $booking->currency,
                 'status' => TransactionStatus::Paid,
-                'processed_at' => '2026-10-30 00:55:00',
+                'processed_at' => '2026-10-29 23:55:00',
             ],
         );
     }

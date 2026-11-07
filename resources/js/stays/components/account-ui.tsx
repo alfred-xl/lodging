@@ -64,7 +64,7 @@ export function RowGroup({
     return (
         <section className="px-4 pt-6">
             {title && <h2 className="pb-3 st-strong1">{title}</h2>}
-            <ul className="divide-y divide-st-border-soft overflow-hidden rounded-st-md border border-st-border-soft">
+            <ul className="divide-y divide-st-border-soft overflow-hidden rounded-st-md border border-st-border-soft bg-st-surface">
                 {children}
             </ul>
         </section>

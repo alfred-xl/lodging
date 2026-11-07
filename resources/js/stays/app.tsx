@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { BottomNav } from './components/bottom-nav';
 import { SheetContainerContext } from './components/sheet';
 import { Button } from './components/ui';
@@ -7,10 +8,7 @@ import { goHome, lastDirection, TAB_IDS, topOf, useRouter } from './router';
 import type { TabId } from './router';
 import {
     AccountScreen,
-    CurrencyScreen,
-    DevicePreferencesScreen,
     InfoScreen,
-    LanguageScreen,
     NotificationsScreen,
     SignOutSheet,
 } from './screens/account';
@@ -28,10 +26,19 @@ import {
 import {
     CouponSheet,
     RewardsActivityScreen,
+    RewardsProgrammeScreen,
     WalletCreditsSheet,
     WalletFaqScreen,
     WalletScreen,
 } from './screens/account-wallet';
+import { CreateListSheet, SavedListsScreen } from './screens/saved-lists';
+import {
+    CurrencyScreen,
+    LanguageScreen,
+    SettingsScreen,
+    TemperatureScreen,
+    UnitsScreen,
+} from './screens/settings';
 import {
     AuthForgotScreen,
     AuthPasswordScreen,
@@ -57,7 +64,28 @@ import { StoreProvider, useStore } from './store';
 import { APP_NAME, themeVariables } from './theme';
 
 // Results and property pages keep the bar so each tab's stack can be left and returned to.
-const SCREENS_WITH_BAR = [undefined, 'results', 'property', 'stay', 'wallet'];
+const SCREENS_WITH_BAR = [
+    undefined,
+    'results',
+    'property',
+    'stay',
+    'wallet',
+    'saved-lists',
+    'device-preferences',
+    'currency',
+    'language',
+    'units',
+    'temperature',
+];
+
+// The floating bar's height plus the gaps around it. Screens that show it end with this
+// much room (see stays.css), and sticky footers sit above it.
+const BAR_SPACE =
+    'calc(var(--st-tab-bar-height) + 0.5rem + max(0.5rem, env(safe-area-inset-bottom) - 0.75rem) + 0.75rem)';
+
+function hasBar(entry: string): boolean {
+    return SCREENS_WITH_BAR.includes(segmentsOf(entry)[0]);
+}
 
 function segmentsOf(entry: string): string[] {
     return entry.split('?')[0].split('/').filter(Boolean);
@@ -148,6 +176,8 @@ function CurrentScreen({ tab, entry }: { tab: TabId; entry: string }) {
             return <EditProfileScreen field={second} />;
         case 'wallet':
             return <WalletScreen />;
+        case 'rewards-programme':
+            return <RewardsProgrammeScreen />;
         case 'rewards-activity':
             return <RewardsActivityScreen />;
         case 'wallet-faqs':
@@ -161,7 +191,13 @@ function CurrentScreen({ tab, entry }: { tab: TabId; entry: string }) {
         case 'transaction':
             return <TransactionDetailsScreen transactionId={second} />;
         case 'device-preferences':
-            return <DevicePreferencesScreen />;
+            return <SettingsScreen />;
+        case 'saved-lists':
+            return <SavedListsScreen />;
+        case 'units':
+            return <UnitsScreen />;
+        case 'temperature':
+            return <TemperatureScreen />;
         case 'currency':
             return <CurrencyScreen />;
         case 'language':
@@ -212,6 +248,12 @@ function TabPane({
             onScroll={(event) =>
                 positions.current.set(entry, event.currentTarget.scrollTop)
             }
+            data-bar={hasBar(entry)}
+            style={
+                {
+                    '--st-bar-space': hasBar(entry) ? BAR_SPACE : '0px',
+                } as CSSProperties
+            }
             className={clsx(
                 'absolute inset-0 overflow-x-hidden overflow-y-auto',
                 !active && 'invisible',
@@ -238,7 +280,7 @@ function Frame() {
     }
 
     const activeEntry = topOf(router, router.tab);
-    const showBar = SCREENS_WITH_BAR.includes(segmentsOf(activeEntry)[0]);
+    const showBar = hasBar(activeEntry);
 
     return (
         <div
@@ -289,6 +331,7 @@ function Frame() {
                 />
                 <SignOutSheet open={router.sheet?.name === 'signout'} />
                 <CouponSheet open={router.sheet?.name === 'coupon'} />
+                <CreateListSheet open={router.sheet?.name === 'create-list'} />
                 <WalletCreditsSheet
                     open={router.sheet?.name === 'wallet-credits'}
                 />

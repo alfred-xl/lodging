@@ -37,7 +37,7 @@ import {
     sortHotels,
 } from '../data';
 import type { Hotel } from '../data';
-import { formatLong, formatShort, plural } from '../format';
+import { formatDistance, formatLong, formatShort, plural } from '../format';
 import { goBack, Link, navigate, openSheet, selectTab } from '../router';
 import { useStore } from '../store';
 
@@ -58,7 +58,7 @@ export function occupancyLabel(search: {
 }
 
 export function ResultRow({ hotel }: { hotel: Hotel }) {
-    const { search } = useStore();
+    const { search, prefs } = useStore();
 
     return (
         <article className="relative flex gap-2 border-b border-st-border-soft bg-st-surface px-2 py-3">
@@ -80,7 +80,8 @@ export function ResultRow({ hotel }: { hotel: Hotel }) {
                 <StarRating stars={hotel.stars} preferred={hotel.preferred} />
                 <ReviewScore score={hotel.score} count={hotel.reviewCount} />
                 <Location>
-                    {hotel.area} · {hotel.distanceKm.toFixed(1)} km from centre
+                    {hotel.area} ·{' '}
+                    {formatDistance(hotel.distanceKm, prefs.units)} from centre
                 </Location>
                 {hotel.deal && (
                     <div>

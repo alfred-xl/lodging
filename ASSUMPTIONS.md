@@ -67,9 +67,16 @@ The prompt says to follow the guide when they conflict, unless its "Known differ
 ## My account
 
 - **First launch:** the app starts signed out, because the sign-in flow needs a real signed-out state. The profile page appears after signing in.
-- **Currency and Language:** these live under Device preferences. They save the choice and show it in the row, but prices stay in pounds and text stays in English. Each picker says so.
+- **Settings:** the Device preferences row opens Settings, as in the reference. It has Language, Currency, Units and Temperature with their current values, then an About section. Its About rows open placeholder pages. "Rate us in the App Store" becomes "Rate us", because this is a web app. The Language hint says text stays in English, instead of the reference's "This will take you to your system settings", which a web page can't do. The version is v 1.0.
+- **Currency:** a searchable list with "Suggested for you" and "All currencies", each showing its symbol, with the chosen one ticked. The choice is saved, but prices stay in pounds, and the page says so.
+- **Units and Temperature:** imperial units change the distance to the centre in search results to miles. Temperature is saved, but nothing in the app shows weather yet.
+- **Saved lists:** opens a Saved page with Lists and Alerts tabs, as in the reference, instead of switching to the Saved tab. Lists shows "My next trip" (the saved properties, which opens the Saved tab) and any lists made with "Create a list". Those lists are names only, kept on this device. Empty, it shows the reference's illustration and "Start your search". Alerts shows the empty price-alerts state and a one-question survey. "Genius" becomes "Lodgely Rewards", and "Start searching for flights" says flights aren't part of the prototype.
 - **Preferences:** they're stored with the session, so sign out resets them.
-- **Layout:** rebuilt from the reference screenshots on a white background. Rows sit in rounded, bordered groups. The header greets the person by first name, with their photo in a yellow ring.
+- **Layout:** rebuilt from the reference screenshots. Rows sit in rounded white groups on a light gray page. Signed in, the blue header greets the person by first name, with their photo in a yellow ring. The greeting stays at the top while scrolling.
+- **Rewards cards (signed in):** two white cards sit in the blue header. The first says "You have 3 Lodgely rewards" and how many completed stays are left before Level 2 (5 stays, counted from past bookings). The second shows the wallet balance, or "No Credits or vouchers yet". They open the rewards programme page and Rewards & Wallet.
+- **Signed out:** a placeholder avatar, "Sign in to manage your trip and save 10% or more on select stays and rental cars", and one Sign in or register button. Below that come the reference's signed-out rows: Rewards programme, Rewards & Wallet, Saved lists, Device and Communication preferences, Help and support with Dispute resolution, and Travel articles. "Genius loyalty programme" becomes "Lodgely Rewards programme".
+- **Rewards programme page:** lists the three Level 1 rewards and how the levels work. Signed in, it shows progress towards Level 2. The level rules are made up for the prototype.
+- **Tab bar:** a floating, frosted capsule above the bottom edge, as in the iOS 26 reference, with a soft pill behind the active tab. Signed out, the last tab is labelled Sign in. Screens that show the bar end with enough room for it. The property page's Select room panel extends down behind it.
 - **Rewards level:** the reference's "Genius Level 1" becomes "Lodgely Rewards Level 1", and "Booking.com" in copy becomes Lodgely.
 - **Sections above Preferences:** the screenshots start at Preferences, so two sections come first: Payment information, then Manage account. They hold Rewards & Wallet, Payment methods, Transactions and Personal details.
 - **Transaction details:** tapping a payment opens its details: amount, category, property, status, date and time, who processed it, and the card's last 4 digits. Times are shown exactly as recorded, in UK time.
@@ -80,7 +87,9 @@ The prompt says to follow the guide when they conflict, unless its "Known differ
 - **Passport:** the number is stored encrypted and never sent back. The app only ever shows its last 3 digits.
 - **Coupons:** no coupon codes exist, so every code is turned down with a message.
 - **Email:** the sign-in email is shown but can't be edited, because changing it needs a verification step this prototype doesn't have. The same goes for "Change email with phone verification".
-- **Phone flags:** these use emoji. Windows shows letters in place of flag emoji.
+- **Phone flags:** UK numbers show a drawn round Union Jack, as in the reference. Other countries use the flag emoji cropped to a circle, which Windows shows as letters.
+- **Rewards & Wallet illustrations:** the wallet, coins, phone and coin-stack pictures are simple drawings in theme colours, standing in for the reference's artwork.
+- **Back buttons:** account pages (Personal details, Rewards & Wallet, Payment details, Transactions) use a chevron, as in the reference. Other pages keep the arrow.
 
 ## Splash screen
 
@@ -146,6 +155,7 @@ The layout follows the three reference screenshots, on a white page. The blue he
 ## App name and home-screen use
 
 - **App name:** `APP_NAME` in `.env` names the app everywhere: the page title, splash screen, home-screen name (`/manifest.webmanifest` is generated from it), and every screen that says the name. The page writes it into a meta tag, and `theme.ts` reads it from there, so changing it only needs a reload, not a rebuild. A running `composer run dev` has to be restarted to see a change, because it copies `.env` when it starts.
+- **App icon:** generated from `APP_NAME`: its first letter or digit in white on the brand blue. The same icon serves as `favicon.svg` and `favicon.ico` for browser tabs, `apple-touch-icon.png` for iPhone home screens, and the 192 and 512 PNGs in the manifest. Pages link to them with a `?v=` that changes with the name, so browsers fetch the new icon. The PNGs use DejaVu Sans Bold from `resources/fonts/`, under its own free licence. The brand colours are in `config/stays.php`. iOS keeps the old home-screen icon until the app is removed and added again.
 - **Home-screen app on iPhone:** the status bar is opaque black (`apple-mobile-web-app-status-bar-style` set to `black`), not translucent. With a translucent status bar, iOS 26 lays out home-screen web apps shorter than the screen and leaves a strip under the tab bar that the page can't draw into. Stretching the app doesn't help, because the stretched part is clipped. The cost is that the status bar is black above the blue header, instead of blue. The stay details header no longer adds the status-bar space twice when it sticks to the top. iOS only picks up these settings when the app is removed from the home screen and added again.
 
 ## Seeded account details
@@ -154,7 +164,7 @@ The layout follows the three reference screenshots, on a white page. The blue he
 
 - **Profile:** gender "I am a man", and phone +447881174218. Date of birth, passport, address, display name and nationality are left empty.
 - **Saved card:** Mastercard ending 9633, expiring 11-2030.
-- **Payment:** £28.10 for accommodation at Majestic Inn Liverpool on 30 Oct 2026 at 00:55, paid with a different Mastercard, ending 2931, as in the reference.
+- **Payment:** £28.10 for accommodation at Majestic Inn Liverpool on 29 Oct 2026 at 23:55, paid with a different Mastercard, ending 2931, as in the reference.
 - **Wallet balance:** £0.
 
 ## Trips and stay details

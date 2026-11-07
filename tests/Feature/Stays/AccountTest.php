@@ -41,8 +41,8 @@ test('the seeded account has the reference profile, card and payment', function 
         ->assertJsonPath('data.transactions.0.card_last_four', '2931')
         ->assertJsonPath('data.transactions.0.amount_minor', 2810)
         ->assertJsonPath('data.transactions.0.status', 'paid')
-        ->assertJsonPath('data.transactions.0.processed_on', '2026-10-30')
-        ->assertJsonPath('data.transactions.0.processed_at', '2026-10-30T00:55')
+        ->assertJsonPath('data.transactions.0.processed_on', '2026-10-29')
+        ->assertJsonPath('data.transactions.0.processed_at', '2026-10-29T23:55')
         ->assertJsonPath('data.transactions.0.category', 'Accommodation');
 });
 

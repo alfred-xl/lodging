@@ -129,6 +129,16 @@ export function formatMinor(minor: number, currency: string): string {
     }).format(minor / 100);
 }
 
+// "1.2 km", or "0.7 mi" for imperial units.
+export function formatDistance(
+    km: number,
+    units: 'metric' | 'imperial',
+): string {
+    return units === 'imperial'
+        ? `${(km * 0.621371).toFixed(1)} mi`
+        : `${km.toFixed(1)} km`;
+}
+
 export function plural(count: number, noun: string, nouns?: string): string {
     return `${count.toLocaleString('en-US')} ${count === 1 ? noun : (nouns ?? `${noun}s`)}`;
 }

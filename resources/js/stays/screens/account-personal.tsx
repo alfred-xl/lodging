@@ -34,10 +34,10 @@ function DetailRow({
     children?: ReactNode;
 }) {
     return (
-        <div className="px-4 py-3">
+        <div className="px-4 py-1">
             <Link
                 to={to}
-                className="-mx-4 flex flex-col gap-1 px-4 py-2 st-transition hover:bg-st-surface-alt"
+                className="-mx-4 flex flex-col gap-2 px-4 py-2 st-transition hover:bg-st-surface-alt"
             >
                 <span className="flex items-center justify-between gap-3 st-body1">
                     {label}
@@ -46,13 +46,60 @@ function DetailRow({
                 {value ? (
                     <span className="st-emphasized1 break-words">{value}</span>
                 ) : (
-                    <span className="st-body1 text-st-text-alt">
+                    <span className="st-body2 text-st-text-alt">
                         {placeholder}
                     </span>
                 )}
             </Link>
             {children}
         </div>
+    );
+}
+
+function UkFlag() {
+    return (
+        <svg viewBox="0 0 60 60" className="size-full">
+            <rect width="60" height="60" className="fill-st-flag-blue" />
+            <path
+                d="M0 0 60 60M60 0 0 60"
+                strokeWidth="12"
+                className="stroke-st-on-dark"
+            />
+            <path
+                d="M0 0 60 60M60 0 0 60"
+                strokeWidth="5"
+                className="stroke-st-flag-red"
+            />
+            <path
+                d="M30 0v60M0 30h60"
+                strokeWidth="18"
+                className="stroke-st-on-dark"
+            />
+            <path
+                d="M30 0v60M0 30h60"
+                strokeWidth="10"
+                className="stroke-st-flag-red"
+            />
+        </svg>
+    );
+}
+
+// A round flag for the number's country. UK numbers get a drawn flag; others use the
+// flag emoji, scaled up so the circle crops it.
+function PhoneFlag({ phone }: { phone: string }) {
+    return (
+        <span
+            aria-hidden
+            className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-st-full"
+        >
+            {splitPhone(phone).dial === '+44' ? (
+                <UkFlag />
+            ) : (
+                <span className="block scale-[3] st-headline3">
+                    {flagFor(phone)}
+                </span>
+            )}
+        </span>
     );
 }
 
@@ -140,7 +187,7 @@ function PersonalDetails({ account }: { account: AccountDetails }) {
                     placeholder="Add your email address"
                 >
                     {account.emailVerified && (
-                        <span className="inline-block rounded-st-sm border border-st-success px-1.5 st-body2 text-st-success">
+                        <span className="inline-block rounded-st-sm bg-st-success-fill px-1.5 st-small1 text-st-on-dark">
                             Verified
                         </span>
                     )}
@@ -169,9 +216,7 @@ function PersonalDetails({ account }: { account: AccountDetails }) {
                     value={
                         account.phone ? (
                             <span className="flex items-center gap-3">
-                                <span aria-hidden className="st-headline3">
-                                    {flagFor(account.phone)}
-                                </span>
+                                <PhoneFlag phone={account.phone} />
                                 {account.phone}
                             </span>
                         ) : undefined
@@ -198,18 +243,12 @@ function PersonalDetails({ account }: { account: AccountDetails }) {
                     This information will be shown next to reviews you write and
                     any forum posts you make.
                 </SectionIntro>
-                <div className="px-4 py-3">
+                <div className="px-4 py-2">
                     <Link
                         to={edit('photo')}
                         className="-mx-4 flex flex-col gap-3 px-4 py-2 st-transition hover:bg-st-surface-alt"
                     >
-                        <span className="flex items-center justify-between gap-3 st-body1">
-                            Profile picture
-                            <ChevronRight
-                                className="size-5 shrink-0"
-                                aria-hidden
-                            />
-                        </span>
+                        <span className="st-body1">Profile picture</span>
                         <Avatar
                             firstName={account.firstName}
                             lastName={account.lastName}
@@ -238,7 +277,7 @@ function PersonalDetails({ account }: { account: AccountDetails }) {
 export function PersonalDetailsScreen() {
     return (
         <div className="min-h-full bg-st-surface">
-            <TopBar title="Personal details" fallback="/" />
+            <TopBar title="Personal details" fallback="/" back="chevron" />
             <AccountGate>
                 {(account) => <PersonalDetails account={account} />}
             </AccountGate>
@@ -349,7 +388,7 @@ function EditForm({
 
     return (
         <div className="flex min-h-full flex-col bg-st-surface">
-            <TopBar title={title} fallback={BACK} />
+            <TopBar title={title} fallback={BACK} back="chevron" />
             <form
                 noValidate
                 className="flex flex-1 flex-col"
@@ -610,12 +649,12 @@ function PassportForm({ account }: { account: AccountDetails }) {
 function EmailScreen({ account }: { account: AccountDetails }) {
     return (
         <div className="min-h-full bg-st-surface">
-            <TopBar title="Email address" fallback={BACK} />
+            <TopBar title="Email address" fallback={BACK} back="chevron" />
             <main className="flex flex-col gap-3 px-4 pt-4">
                 <p className="st-emphasized1 break-words">{account.email}</p>
                 {account.emailVerified && (
                     <p>
-                        <span className="inline-block rounded-st-sm border border-st-success px-1.5 st-body2 text-st-success">
+                        <span className="inline-block rounded-st-sm bg-st-success-fill px-1.5 st-small1 text-st-on-dark">
                             Verified
                         </span>
                     </p>
@@ -863,7 +902,7 @@ function PhotoScreen({ account }: { account: AccountDetails }) {
 
     return (
         <div className="flex min-h-full flex-col bg-st-surface">
-            <TopBar title="Profile picture" fallback={BACK} />
+            <TopBar title="Profile picture" fallback={BACK} back="chevron" />
             <main className="flex flex-1 flex-col items-center gap-4 px-4 pt-8">
                 <Avatar
                     key={account.avatarUrl}
@@ -944,7 +983,11 @@ export function EditProfileScreen({ field }: { field?: string }) {
     if (!Editor) {
         return (
             <div className="min-h-full bg-st-surface">
-                <TopBar title="Personal details" fallback={BACK} />
+                <TopBar
+                    title="Personal details"
+                    fallback={BACK}
+                    back="chevron"
+                />
                 <p className="p-4 st-body2 text-st-text-alt">
                     We can't find that detail.
                 </p>
@@ -955,7 +998,11 @@ export function EditProfileScreen({ field }: { field?: string }) {
     if (!account) {
         return (
             <div className="min-h-full bg-st-surface">
-                <TopBar title="Personal details" fallback={BACK} />
+                <TopBar
+                    title="Personal details"
+                    fallback={BACK}
+                    back="chevron"
+                />
                 <AccountGate>{() => null}</AccountGate>
             </div>
         );

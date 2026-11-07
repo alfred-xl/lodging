@@ -17,8 +17,8 @@ if (root) {
             <Toaster
                 position="bottom-center"
                 theme="light"
-                mobileOffset={{ bottom: 64 }}
-                offset={{ bottom: 64 }}
+                mobileOffset={{ bottom: 96 }}
+                offset={{ bottom: 96 }}
             />
         </StrictMode>,
     );

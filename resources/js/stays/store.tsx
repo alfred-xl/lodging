@@ -50,9 +50,15 @@ export type MockBooking = {
     fromServer?: boolean;
 };
 
+export type Units = 'metric' | 'imperial';
+
+export type Temperature = 'celsius' | 'fahrenheit';
+
 export type Prefs = {
     currency: string;
     language: string;
+    units: Units;
+    temperature: Temperature;
     notifications: Record<string, boolean>;
 };
 
@@ -73,6 +79,7 @@ export type StayNotes = {
     ratings: Record<string, { score: number; comment: string }>;
     surveys: Record<string, number[]>;
     dismissed: string[];
+    lists?: string[];
 };
 
 const EMPTY_NOTES: StayNotes = { ratings: {}, surveys: {}, dismissed: [] };
@@ -88,7 +95,9 @@ type Session = {
 
 const DEFAULT_PREFS: Prefs = {
     currency: 'GBP',
-    language: 'English (UK)',
+    language: 'English (United Kingdom)',
+    units: 'metric',
+    temperature: 'celsius',
     notifications: {
         bookings: true,
         deals: false,
@@ -125,6 +134,7 @@ type Store = {
     rateStay: (id: string, score: number, comment: string) => void;
     answerSurvey: (id: string, answer: number) => void;
     dismiss: (key: string) => void;
+    createList: (name: string) => void;
     prefs: Prefs;
     setPrefs: (changes: Partial<Prefs>) => void;
     account: AccountDetails | null;
@@ -154,9 +164,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const [bookings, setBookings] = useState<MockBooking[]>(
         restored?.bookings ?? [],
     );
-    const [prefs, setPrefsState] = useState<Prefs>(
-        restored?.prefs ?? DEFAULT_PREFS,
-    );
+    // Sessions saved before a setting existed get its default.
+    const [prefs, setPrefsState] = useState<Prefs>(() => {
+        const merged = { ...DEFAULT_PREFS, ...restored?.prefs };
+
+        return merged.language === 'English (UK)'
+            ? { ...merged, language: DEFAULT_PREFS.language }
+            : merged;
+    });
     const [tripsTab, setTripsTab] = useState<BookingStatus>('active');
     const [notes, setNotes] = useState<StayNotes>(
         restored?.notes ?? EMPTY_NOTES,
@@ -417,6 +432,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
                 setNotes((current) => ({
                     ...current,
                     dismissed: [...current.dismissed, key],
+                })),
+            createList: (name) =>
+                setNotes((current) => ({
+                    ...current,
+                    lists: [...(current.lists ?? []), name],
                 })),
             prefs,
             setPrefs: (changes) =>

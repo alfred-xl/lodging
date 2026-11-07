@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import {
     ArrowLeft,
     Check,
+    ChevronLeft,
     Clock,
     Heart,
     LoaderCircle,
@@ -105,11 +106,16 @@ export function TopBar({
     title,
     fallback,
     trailing,
+    back = 'arrow',
 }: {
     title?: string;
     fallback: string;
     trailing?: ReactNode;
+    // Account pages use a chevron, as in the reference; other pages use an arrow.
+    back?: 'arrow' | 'chevron';
 }) {
+    const BackIcon = back === 'chevron' ? ChevronLeft : ArrowLeft;
+
     return (
         <header className="st-on-brand bg-st-brand st-safe-top text-st-on-dark">
             <div className="grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-1 px-1">
@@ -118,7 +124,7 @@ export function TopBar({
                     onClick={() => goBack(fallback)}
                     className="hover:bg-st-action-hover"
                 >
-                    <ArrowLeft className="size-6" aria-hidden />
+                    <BackIcon className="size-7" aria-hidden />
                 </IconButton>
                 <h1 className="truncate text-center st-strong1">{title}</h1>
                 <div className="flex min-w-11 justify-end">{trailing}</div>
