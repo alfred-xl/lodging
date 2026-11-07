@@ -2,26 +2,26 @@
 
 use App\Support\AppIcon;
 
-test('the icon shows the first letter of APP_NAME on the brand blue', function () {
+test('the icon shows APP_NAME in full on #013b96', function () {
     config(['app.name' => 'Lodgely']);
 
     $this->get(route('app-icon.svg'))
         ->assertOk()
         ->assertHeader('Content-Type', 'image/svg+xml')
-        ->assertSee('fill="#003b95"', escape: false)
-        ->assertSee('>L</text>', escape: false);
+        ->assertSee('fill="#013b96"', escape: false)
+        ->assertSee('>Lodgely</text>', escape: false);
 });
 
 test('renaming the app changes the icon and its version', function () {
     config(['app.name' => 'Lodgely']);
     $before = AppIcon::fromConfig()->version();
 
-    config(['app.name' => 'roomly stays']);
+    config(['app.name' => '  Roomly   Stays ']);
 
-    expect(AppIcon::fromConfig()->letter())->toBe('R')
+    expect(AppIcon::fromConfig()->text())->toBe('Roomly Stays')
         ->and(AppIcon::fromConfig()->version())->not->toBe($before);
 
-    $this->get(route('app-icon.svg'))->assertSee('>R</text>', escape: false);
+    $this->get(route('app-icon.svg'))->assertSee('>Roomly Stays</text>', escape: false);
 
     $this->withoutVite()
         ->get('/')
@@ -29,14 +29,23 @@ test('renaming the app changes the icon and its version', function () {
         ->assertSee('/apple-touch-icon.png?v='.AppIcon::fromConfig()->version(), escape: false);
 });
 
-test('names that start with a symbol use their first letter', function () {
-    config(['app.name' => '  — Évasion']);
+test('long names shrink to fit the icon', function () {
+    config(['app.name' => 'Lodgely']);
+    preg_match('/font-size="([\d.]+)"/', AppIcon::fromConfig()->svg(), $short);
 
-    expect(AppIcon::fromConfig()->letter())->toBe('É');
+    config(['app.name' => 'Lodgely Holiday Apartments']);
+    preg_match('/font-size="([\d.]+)"/', AppIcon::fromConfig()->svg(), $long);
+    preg_match('/textLength="([\d.]+)"/', AppIcon::fromConfig()->svg(), $width);
 
-    config(['app.name' => '★ 24 Rooms']);
+    expect((float) $long[1])->toBeLessThan((float) $short[1])
+        ->and((float) $width[1])->toBeLessThanOrEqual(52.0);
+});
 
-    expect(AppIcon::fromConfig()->letter())->toBe('2');
+test('names are escaped in the SVG', function () {
+    config(['app.name' => 'Bed & <Breakfast>']);
+
+    $this->get(route('app-icon.svg'))
+        ->assertSee('>Bed &amp; &lt;Breakfast&gt;</text>', escape: false);
 });
 
 test('home-screen icons are PNGs of the requested size', function (string $url, int $size) {

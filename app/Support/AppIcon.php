@@ -6,7 +6,7 @@ use GdImage;
 use Illuminate\Support\Str;
 
 /**
- * The app icon: the first letter of APP_NAME in white on the brand blue.
+ * The app icon: APP_NAME in full, in white, sized to fit the icon's width.
  */
 class AppIcon
 {
@@ -22,19 +22,17 @@ class AppIcon
     {
         return new self(
             (string) config('app.name'),
-            (string) config('stays.brand_color'),
+            (string) config('stays.icon_color'),
             (string) config('stays.on_brand_color'),
         );
     }
 
     /**
-     * The first letter or digit of the name, upper-cased.
+     * The name as shown on the icon, with spacing tidied.
      */
-    public function letter(): string
+    public function text(): string
     {
-        preg_match('/[\p{L}\p{N}]/u', $this->name, $match);
-
-        return Str::upper($match[0] ?? '?');
+        return Str::squish($this->name) ?: '?';
     }
 
     /**
@@ -42,7 +40,7 @@ class AppIcon
      */
     public function version(): string
     {
-        return substr(md5($this->letter().$this->background.$this->foreground), 0, 8);
+        return substr(md5($this->text().$this->background.$this->foreground), 0, 8);
     }
 
     /**
@@ -50,12 +48,17 @@ class AppIcon
      */
     public function svg(): string
     {
-        $letter = e($this->letter());
+        $text = e($this->text());
+
+        // Long names get a smaller size, and textLength stretches or squeezes them to fit.
+        $fontSize = round(min(22, 54 / (mb_strlen($this->text()) * 0.6)), 1);
+        $width = round(min(52, mb_strlen($this->text()) * $fontSize * 0.62), 1);
+        $baseline = round(32 + $fontSize * 0.36, 1);
 
         return <<<SVG
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
                 <rect width="64" height="64" rx="14" fill="{$this->background}"/>
-                <text x="32" y="46" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="40" font-weight="700" fill="{$this->foreground}">{$letter}</text>
+                <text x="32" y="{$baseline}" text-anchor="middle" textLength="{$width}" lengthAdjust="spacingAndGlyphs" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="{$fontSize}" font-weight="700" fill="{$this->foreground}">{$text}</text>
             </svg>
             SVG;
     }
@@ -108,8 +111,14 @@ class AppIcon
     private function drawLetter(GdImage $image, int $canvas): void
     {
         $font = resource_path(self::FONT);
-        $fontSize = $canvas * 0.45;
-        $box = imagettfbbox($fontSize, 0, $font, $this->letter());
+
+        // Sized so the name fills 80% of the width, but never taller than 40% of the icon.
+        $box = imagettfbbox(100, 0, $font, $this->text());
+        $fontSize = 100 * min(
+            ($canvas * 0.8) / ($box[2] - $box[0]),
+            ($canvas * 0.4) / ($box[1] - $box[7]),
+        );
+        $box = imagettfbbox($fontSize, 0, $font, $this->text());
 
         // Centres the glyph's ink, not its line box, so it sits in the middle.
         $width = $box[2] - $box[0];
@@ -117,7 +126,7 @@ class AppIcon
         $x = (int) round(($canvas - $width) / 2 - $box[0]);
         $y = (int) round(($canvas + $height) / 2 - $box[1]);
 
-        imagettftext($image, $fontSize, 0, $x, $y, $this->allocate($image, $this->foreground), $font, $this->letter());
+        imagettftext($image, $fontSize, 0, $x, $y, $this->allocate($image, $this->foreground), $font, $this->text());
     }
 
     private function roundedRectangle(GdImage $image, int $size, int $radius, int $color): void

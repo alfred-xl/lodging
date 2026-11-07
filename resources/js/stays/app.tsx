@@ -31,6 +31,11 @@ import {
     WalletFaqScreen,
     WalletScreen,
 } from './screens/account-wallet';
+import {
+    FindBookingScreen,
+    HelpCentreScreen,
+    HelpTopicScreen,
+} from './screens/help';
 import { CreateListSheet, SavedListsScreen } from './screens/saved-lists';
 import {
     CurrencyScreen,
@@ -194,6 +199,16 @@ function CurrentScreen({ tab, entry }: { tab: TabId; entry: string }) {
             return <SettingsScreen />;
         case 'saved-lists':
             return <SavedListsScreen />;
+        case 'help':
+            if (second === 'find-booking') {
+                return <FindBookingScreen />;
+            }
+
+            return second ? (
+                <HelpTopicScreen categoryId={second} topicId={third} />
+            ) : (
+                <HelpCentreScreen />
+            );
         case 'units':
             return <UnitsScreen />;
         case 'temperature':

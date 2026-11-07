@@ -17,4 +17,15 @@ return [
 
     'on_brand_color' => '#ffffff',
 
+    /*
+    |--------------------------------------------------------------------------
+    | App icon
+    |--------------------------------------------------------------------------
+    |
+    | The favicon and home-screen icon show APP_NAME in full on this colour.
+    |
+    */
+
+    'icon_color' => '#013b96',
+
 ];

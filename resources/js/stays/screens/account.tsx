@@ -65,7 +65,7 @@ const SUPPORT_ROWS: Row[] = [
     {
         label: 'Contact Customer service',
         icon: CircleHelp,
-        to: info('contact-customer-service'),
+        to: '/help',
     },
     {
         label: 'Safety resource centre',
